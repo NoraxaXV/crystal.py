@@ -4,9 +4,6 @@ import PIL.Image as Image
 import io
 
 class Crystalizer(commands.Cog):
-    def __init__(self):
-        print('Crystalizer Armed!')
-
     @commands.command()
     async def crystal(self, ctx: commands.Context, *, liberal: discord.User=None):
         if liberal == None:
@@ -15,7 +12,6 @@ class Crystalizer(commands.Cog):
             except Exception as e:
                 print(f'Crystalization error occured: {e}')
                 return
-        await ctx.channel.send(f'Ready to crystalize {liberal.display_name}!')
         try:
             with io.BytesIO() as image_binary:
                 self.crystalize(await liberal.display_avatar.read()).save(image_binary, 'PNG')
@@ -23,9 +19,6 @@ class Crystalizer(commands.Cog):
                 await ctx.channel.send(file=discord.File(fp=image_binary, filename="crystalized_liberal.png"))
         except Exception as e:
             print(f'Error sending file: {e}')
-
-        print('Crystalized!')
-
 
     def crystalize(self, avatar_bytes: bytes) -> Image.Image:
         print('Target aquired, engaging crystalizer...')
