@@ -12,8 +12,8 @@ class Crystalizer(commands.Cog):
         if liberal == None:
             try:
                 liberal = (await ctx.channel.fetch_message(ctx.message.reference.message_id)).author
-            except:
-                print(f'Crystalization error occured')
+            except Exception as e:
+                print(f'Crystalization error occured: {e}')
                 return
         await ctx.channel.send(f'Ready to crystalize {liberal.display_name}!')
         try:
