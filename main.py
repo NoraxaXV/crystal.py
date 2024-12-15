@@ -16,15 +16,10 @@ async def main():
             guilds = True,
             guild_messages = True,
         ),
-        application_id = os.getenv('APPLICATION_ID'),
     )
 
     @bot.event
     async def on_ready():
-        guild = discord.Object(id=os.getenv('MY_GUILD_ID'))
-        bot.tree.copy_global_to(guild=guild)
-        await bot.tree.sync(guild=guild)
-
         print(f'Logged in as a bot {bot.user}')
 
     @bot.command()

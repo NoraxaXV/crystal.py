@@ -6,7 +6,7 @@ import io
 # made with love by Nora Yumiya
 class Crystalizer(commands.Cog):
     # Two methods: either ping a user or reply to their message
-    @commands.hybrid_command()
+    @commands.command(name="crystal")
     async def crystal(self, ctx: commands.Context, *, liberal: discord.User=None):
         # If we did not ping a specific user, check if we replied to a message
         if liberal == None:
@@ -17,6 +17,7 @@ class Crystalizer(commands.Cog):
                 print(f'Crystalization error occured: {e}')
                 return
         try:
+            await ctx.channel.send('Target aquired, engaging crystalizer...')
             # Create a bytes file in memory
             with io.BytesIO() as image_binary:
                 # Read the avatar bytes, crystalize, and save the image object to the bytes file
@@ -34,7 +35,6 @@ class Crystalizer(commands.Cog):
             print(f'Error sending file: {e}')
 
     def crystalize(self, avatar_bytes: bytes) -> Image.Image:
-        print('Target aquired, engaging crystalizer...')
         # Open the file and the bytes
         with Image.open('./crystal.png') as crystal, Image.open(io.BytesIO(avatar_bytes)) as avatar:
             # Convert each one to RGBA with alpha channel
