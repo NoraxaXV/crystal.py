@@ -4,7 +4,7 @@ import dotenv
 import asyncio
 import os
 
-import cogs.Crystalizer
+import cogs.Crystalizer as Crystalizer
 
 async def main():
     dotenv.load_dotenv()
@@ -25,7 +25,7 @@ async def main():
     async def ping(ctx):
         await ctx.send('Pong!')
 
-    await bot.add_cog(cogs.Crystalizer())
+    await bot.add_cog(Crystalizer.Crystalizer())
     await bot.start(os.getenv('DISCORD_BOT_TOKEN'))
 
 if __name__ == '__main__':

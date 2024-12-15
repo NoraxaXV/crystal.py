@@ -1,6 +1,7 @@
 import discord
 import discord.ext.commands as commands
 import PIL.Image as Image
+import PIL
 import io
 
 class Crystalizer(commands.Cog):
@@ -17,29 +18,21 @@ class Crystalizer(commands.Cog):
                 return
         await ctx.channel.send(f'Ready to crystalize {liberal.display_name}!')
         try:
-          self.crystalize(await liberal.display_avatar.read(), './crystalized.jpg')
+            with io.BytesIO() as image_binary:
+                self.crystalize(await liberal.display_avatar.read()).save(image_binary, 'PNG')
+                image_binary.seek(0)
+                await ctx.channel.send(file=discord.File(fp=image_binary, filename="crystalized_liberal.png"))
         except Exception as e:
-            print(f'Failed to crystalize avatar image: {e}')
+            print(f'Error sending file: {e}')
 
-    def crystalize(self, avatar_bytes: bytes, outputfp: str):
+        print('Crystalized!')
+
+
+    def crystalize(self, avatar_bytes: bytes) -> Image.Image:
         print('Target aquired, engaging crystalizer...')
-        with Image.open('./../crystal-cut.jpg') as image1, Image.open(io.BytesIO(avatar_bytes)) as image2:
-            image1.convert("RGBA")
-            image2.convert("RGBA")
-
-            image1.putalpha(255)
-
-            image3 = image1.copy()
-            image3.putalpha(127)
-
-            width, height = image1.size
-            canvas = Image.new("RGBA", (width, height))
-
-            # Paste images onto the canvas
-            canvas.paste(image1, (0, 0))
-            canvas.paste(image2, (475, 425))
-            canvas = Image.blend(canvas, image1, 0.65)
-
-            # Save the final image
-            canvas.save(outputfp)
-        print('Crystalized 😏')
+        with Image.open('./crystal.png') as crystal, Image.open(io.BytesIO(avatar_bytes)) as avatar:
+            crystal.convert("RGBA")
+            avatar.convert("RGBA")
+            canvas = Image.new("RGBA", crystal.size)
+            canvas.paste(avatar.resize((400,400)), (200, 200))
+            return Image.alpha_composite(canvas, crystal)
