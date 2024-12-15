@@ -1,6 +1,7 @@
 import discord
 import discord.ext.commands as commands
 import PIL.Image as Image
+import PIL.ImageDraw as ImageDraw
 import io
 
 # made with love by Nora Yumiya
@@ -32,12 +33,18 @@ class Crystalizer(commands.Cog):
     def crystalize(self, avatar_bytes: bytes) -> Image.Image:
         # Open the file and the bytes
         with Image.open('./crystal.png') as crystal, Image.open(io.BytesIO(avatar_bytes)) as avatar:
-            # Convert each one to RGBA with alpha channel
-            crystal.convert("RGBA")
+            # Crop the avatar into a circle
+            avatar = avatar.resize((450,450))
             avatar.convert("RGBA")
+            mask = Image.new('L', avatar.size, 0)
+            ImageDraw.Draw(mask).ellipse((0, 0, avatar.size[0], avatar.size[1]), fill=255)
+            avatar.putalpha(mask)
+
             # Create a blank canvas and paste the avatar into position
+            crystal.convert("RGBA")
             canvas = Image.new("RGBA", crystal.size)
-            canvas.paste(avatar.resize((400,400)), (200, 200))
+            canvas.paste(avatar, (185, 150))
+
             # Blend the crystal on top of the avatar canvas. The crystal image has hard-set alpha values.
             # NOTE add a multiplication to the alpha values of the crystal to adjust the darkness
             return Image.alpha_composite(canvas, crystal)
