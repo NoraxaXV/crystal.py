@@ -1,7 +1,6 @@
 import discord
 import discord.ext.commands as commands
 import PIL.Image as Image
-import PIL
 import io
 
 class Crystalizer(commands.Cog):
