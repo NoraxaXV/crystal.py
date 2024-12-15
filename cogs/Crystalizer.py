@@ -24,13 +24,8 @@ class Crystalizer(commands.Cog):
                 self.crystalize(await liberal.display_avatar.read()).save(image_binary, 'PNG')
                 # Move back to the beginning of the file
                 image_binary.seek(0)
-
-                # switch depending on wheter we are using a slash command or trigger
-                crystal = discord.File(fp=image_binary, filename="crystalized_liberal.png")
-                if ctx.interaction != None:
-                    await ctx.interaction.response.send_message(file=crystal)
-                else:
-                    await ctx.channel.send(file=crystal)
+                # send the file
+                await ctx.channel.send(file=discord.File(fp=image_binary, filename="crystalized_liberal.png"))
         except Exception as e:
             print(f'Error sending file: {e}')
 
