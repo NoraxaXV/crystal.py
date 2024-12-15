@@ -1,4 +1,3 @@
-# Created with love by Nora Yumiya
 import discord
 import discord.ext.commands as commands
 import PIL.Image as Image
