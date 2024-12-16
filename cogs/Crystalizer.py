@@ -19,12 +19,18 @@ class Crystalizer(commands.Cog):
                 return
         try:
             await ctx.channel.send('Target aquired, engaging crystalizer...')
-            await ctx.channel.send(file=discord.File(fp=self.crystalize(await liberal.display_avatar.read()), filename="crystalized_liberal.png"))
+            # Create a bytes file in memory
+            with io.BytesIO() as image_binary:
+                # Read the avatar bytes, crystalize, and save the image object to the bytes file
+                self.crystalize(await liberal.display_avatar.read()).save(image_binary, 'PNG')
+                # Move back to the beginning of the file
+                image_binary.seek(0)
+                # send the file
+                await ctx.channel.send(file=discord.File(fp=image_binary, filename="crystalized_liberal.png"))
         except Exception as e:
             print(f'Error sending file: {e}')
 
     def crystalize(self, avatar_bytes: bytes) -> Image.Image:
-        # NOTE add a multiplication to the alpha values of the crystal to adjust the darkness
         # Open the file and the bytes
         with Image.open('./crystal.png') as crystal, Image.open(io.BytesIO(avatar_bytes)) as avatar:
             # Crop the avatar into a circle
@@ -39,9 +45,6 @@ class Crystalizer(commands.Cog):
             canvas = Image.new("RGBA", crystal.size)
             canvas.paste(avatar, (185, 150))
 
-            # Create a bytes file in memory
-            with io.BytesIO() as result_binary:
-                # Blend the crystal on top of the avatar canvas. The crystal image has pre-set alpha values.
-                Image.alpha_composite(canvas, crystal).save(result_binary, 'PNG')
-                result_binary.seek(0)
-                return result_binary
+            # Blend the crystal on top of the avatar canvas. The crystal image has hard-set alpha values.
+            # NOTE add a multiplication to the alpha values of the crystal to adjust the darkness
+            return Image.alpha_composite(canvas, crystal)
