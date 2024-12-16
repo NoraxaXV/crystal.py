@@ -3,7 +3,7 @@ import discord.ext.commands as commands
 import dotenv
 import asyncio
 import os
-
+import logging
 import cogs.Crystalizer as Crystalizer
 
 async def main():
@@ -20,7 +20,7 @@ async def main():
 
     @bot.event
     async def on_ready():
-        print(f'Logged in as a bot {bot.user}')
+        logging.info(f'Logged in as a bot {bot.user}')
 
     @bot.command()
     async def ping(ctx):
