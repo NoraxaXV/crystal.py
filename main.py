@@ -25,7 +25,7 @@ async def main():
     @bot.command()
     async def ping(ctx):
         await ctx.send('Pong!')
-
+    discord.utils.setup_logging()
     await bot.add_cog(Crystalizer.Crystalizer())
     await bot.start(os.getenv('DISCORD_BOT_TOKEN'))
 
