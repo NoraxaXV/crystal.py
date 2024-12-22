@@ -20,7 +20,7 @@ class Crystalizer(commands.Cog):
                 logging.error(f'Crystalizer failure for message <{ctx.message.id}>. liberal was "{liberal}" and reply was "{ctx.message.reference}"')
                 return
 
-        await ctx.channel.send('Target aquired, engaging crystalizer...')
+        # await ctx.channel.send('Target aquired, engaging crystalizer...')
         # Fetch avatar bytes
         avatar = await liberal.display_avatar.read()
         # Crystalize the avatar into a bytes file in memory
@@ -32,13 +32,13 @@ class Crystalizer(commands.Cog):
         with Image.open('./crystal.png') as crystal, Image.open(io.BytesIO(avatar_bytes)) as avatar:
             # Crop the avatar into a circle
             avatar = avatar.resize((450,450))
-            avatar.convert("RGBA")
+            # avatar.convert("RGBA")
             mask = Image.new('L', avatar.size, 0)
             ImageDraw.Draw(mask).ellipse((0, 0, avatar.size[0], avatar.size[1]), fill=255)
             avatar.putalpha(mask)
 
             # Create a blank canvas and paste the avatar into position
-            crystal.convert("RGBA")
+            # crystal.convert("RGBA")
             canvas = Image.new("RGBA", crystal.size)
             canvas.paste(avatar, (185, 150))
 
