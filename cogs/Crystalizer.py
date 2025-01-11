@@ -29,7 +29,7 @@ class Crystalizer(commands.Cog):
         avatar = await liberal.display_avatar.read()
         # Crystalize the avatar into a bytes file in memory
         with io.BytesIO(self.crystalize(avatar)) as avatarfile:
-            await ctx.channel.send(file=discord.File(fp=avatarfile, filename="crystalized_liberal.png"))
+            await ctx.send(file=discord.File(fp=avatarfile, filename="crystalized_liberal.png"))
 
     def crystalize(self, avatar_bytes: bytes) -> bytes:
         # Open the file and the bytes
