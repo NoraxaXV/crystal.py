@@ -9,7 +9,11 @@ import logging
 class Crystalizer(commands.Cog):
 
     # Two methods: either ping a user or reply to their message
-    @commands.command(name="crystal")
+    @commands.hybrid_command()
+    @discord.app_commands.describe(
+        liberal="User to crystalize"
+    )
+#    @commands.has_any_role(ROLE_ID)
     async def crystal(self, ctx: commands.Context, *, liberal: discord.User=None):
         # If we did not ping a specific user, check if we replied to a message
         if liberal == None:

@@ -21,7 +21,7 @@ async def main():
     @bot.event
     async def on_ready():
         logging.info(f'Logged in as a bot {bot.user}')
-
+        logging.info(f'Commands = {await bot.tree.sync()}')
     @bot.command()
     async def ping(ctx):
         await ctx.send('Pong!')

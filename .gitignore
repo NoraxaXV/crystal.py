@@ -1,7 +1,16 @@
 .env
+.envrc
 .venv/
 lib/
 include/
 bin/
 *.pyc
-pyenv.cfg
+pyenv.cfg# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
